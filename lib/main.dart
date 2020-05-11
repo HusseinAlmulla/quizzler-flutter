@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quizzler/questions.dart';
+import 'package:quizzler/quiz_brain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(Quizzler());
 
@@ -27,12 +29,6 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scores = [];
-  List<Question> questionsBank = [
-    Question('Baghdad is the capital of Iraq', true),
-    Question('Iphone is a TV', false),
-    Question('Dell makes cars', false),
-  ];
-
   int questionNumber = 0;
   String note = '';
   bool isDone = false;
@@ -72,7 +68,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questionsBank[questionNumber].question,
+                quizBrain.getQuestion(questionNumber),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -128,7 +124,7 @@ class _QuizPageState extends State<QuizPage> {
 
   void answerAction(bool ans) {
     if (!isDone) {
-      if (ans == questionsBank[questionNumber].answer) {
+      if (ans == quizBrain.getAnswer(questionNumber)) {
         scores.add(Icon(
           Icons.check,
           color: Colors.blue,
@@ -139,7 +135,7 @@ class _QuizPageState extends State<QuizPage> {
           color: Colors.red,
         ));
       }
-      if (questionNumber + 1 < questionsBank.length) {
+      if (questionNumber + 1 < quizBrain.getNumberOfQuestion()) {
         setState(() {
           questionNumber++;
         });
